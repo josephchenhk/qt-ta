@@ -1,0 +1,2 @@
+from .get_similarity import PatternRecognition
+from .get_similarity import LazyChartGenerator as ChartGenerator
