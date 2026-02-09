@@ -9,7 +9,7 @@ name = "qt-ta"
 version = "1.0.0"
 description = "Technical analysis for quantitative trading"
 # readme = "README.md"  # Uncomment when README.md is available
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 authors = [
     {name = "Joseph Chen", email = "josephchenhk@gmail.com"}
 ]
@@ -22,6 +22,9 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Financial and Insurance Industry",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Office/Business :: Financial",
 ]
@@ -29,11 +32,11 @@ classifiers = [
 dependencies = [
     "pandas",
     "numpy",
-    "pandas-ta",
+    "pandas-ta==0.3.14b0",  # Pinned version for Python 3.9+ compatibility (newer versions require Python 3.12+)
     "pytz",
-    # Note: Version constraints removed to allow pip to automatically resolve
+    # Note: pandas-ta is pinned to 0.3.14b0 to support Python 3.9-3.11
+    # Other dependencies have flexible versions to allow pip to automatically resolve
     # compatible versions based on existing packages in the environment.
-    # This provides maximum flexibility for different environments.
 ]
 
 [project.optional-dependencies]

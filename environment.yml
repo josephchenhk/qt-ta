@@ -3,7 +3,7 @@ channels:
   - conda-forge  # Prioritize conda-forge (usually faster and more reliable)
   - defaults
 dependencies:
-  - python=3.12
+  - python=3.11
   - pip
   - cython      # Required for building Cython extensions (use conda version for better compatibility)
   - setuptools  # Required for building packages
@@ -13,7 +13,7 @@ dependencies:
   - pytz
   - pytest
   - pip:
-      - pandas-ta      # Technical analysis library
+      - pandas-ta==0.3.14b0  # Technical analysis library (pinned version for Python 3.11 compatibility)
       - quantstats     # Portfolio analytics and backtesting
       - scikit-optimize  # Bayesian optimization (skopt)
       - plotly         # Interactive visualization

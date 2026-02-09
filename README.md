@@ -29,7 +29,7 @@ pip install -e .[dev]
 
 ```bash
 # Create a new conda environment
-conda create -n qt_ta_env python=3.12
+conda create -n qt_ta_env python=3.11
 conda activate qt_ta_env
 
 # Install build dependencies
