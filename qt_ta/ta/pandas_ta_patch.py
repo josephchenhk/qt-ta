@@ -1,26 +1,40 @@
 import pandas as pd
+
+# Centralized error message for missing pandas-ta
+PANDAS_TA_ERROR_MESSAGE = (
+    "pandas-ta is required for technical analysis features.\n"
+    "Install it with: pip install pandas-ta\n"
+    "Note: pandas-ta 0.4.0+ requires Python 3.12+.\n"
+    "For Python 3.9–3.11, you may need to install from source or pin to an older version."
+)
+
 try:
     import pandas_ta as ta
     from pandas_ta.custom import create_dir, import_dir
     PANDAS_TA_AVAILABLE = True
 except ImportError:
     PANDAS_TA_AVAILABLE = False
-    # Create a dummy ta module to prevent import errors
+
     class DummyTA:
+        """
+        Minimal stand‑in when pandas-ta is not installed.
+
+        Any attempt to use TA features will raise a concise ImportError
+        explaining how to install pandas-ta.
+        """
+
         class AnalysisIndicators:
             def __init__(self, *args, **kwargs):
-                raise ImportError(
-                    "pandas-ta is required for technical analysis features. "
-                    "Please install it with: pip install pandas-ta\n"
-                    "Note: pandas-ta 0.4.0+ requires Python 3.12+. "
-                    "For Python 3.9-3.11, you may need to install from source."
-                )
+                raise ImportError(PANDAS_TA_ERROR_MESSAGE)
+
         @staticmethod
         def get_time(*args, **kwargs):
             return None
+
         @staticmethod
         def indicators(*args, **kwargs):
             return []
+
     ta = DummyTA()
 
 import io
@@ -104,12 +118,8 @@ else:
     class QTraderAnalysisIndicators:
         """
         Dummy technical analysis accessor when pandas-ta is not installed.
+        Any usage will raise a concise ImportError pointing to pandas-ta.
         """
+
         def __init__(self, pandas_obj):
-            raise ImportError(
-                "pandas-ta is required for technical analysis features. "
-                "Please install it with: pip install pandas-ta\n"
-                "Note: pandas-ta 0.4.0+ requires Python 3.12+. "
-                "For Python 3.9-3.11, you may need to install from source."
-            )
-    
+            raise ImportError(PANDAS_TA_ERROR_MESSAGE)
