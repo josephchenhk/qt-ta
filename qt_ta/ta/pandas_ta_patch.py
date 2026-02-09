@@ -1,6 +1,27 @@
 import pandas as pd
-import pandas_ta as ta
-from pandas_ta.custom import create_dir, import_dir
+try:
+    import pandas_ta as ta
+    from pandas_ta.custom import create_dir, import_dir
+    PANDAS_TA_AVAILABLE = True
+except ImportError:
+    PANDAS_TA_AVAILABLE = False
+    # Create a dummy ta module to prevent import errors
+    class DummyTA:
+        class AnalysisIndicators:
+            def __init__(self, *args, **kwargs):
+                raise ImportError(
+                    "pandas-ta is required for technical analysis features. "
+                    "Please install it with: pip install pandas-ta\n"
+                    "Note: pandas-ta 0.4.0+ requires Python 3.12+. "
+                    "For Python 3.9-3.11, you may need to install from source."
+                )
+        @staticmethod
+        def get_time(*args, **kwargs):
+            return None
+        @staticmethod
+        def indicators(*args, **kwargs):
+            return []
+    ta = DummyTA()
 
 import io
 from contextlib import redirect_stdout
@@ -58,23 +79,37 @@ def redirect_error(func: Callable):
         return out, result
     return wrapper
 
-__df = pd.DataFrame()
-indicators = __df.ta.indicators(as_list=True)
-for attr in indicators:
-    setattr(ta, attr, redirect_error(getattr(ta, attr)))
+if PANDAS_TA_AVAILABLE:
+    __df = pd.DataFrame()
+    indicators = __df.ta.indicators(as_list=True)
+    for attr in indicators:
+        setattr(ta, attr, redirect_error(getattr(ta, attr)))
     
-
-@pd.api.extensions.register_dataframe_accessor("ta")
-class QTraderAnalysisIndicators(ta.AnalysisIndicators):
-    """
-    QTrader Pandas-TA extension.
-    """
-    
-    def __init__(self, pandas_obj):
-        self._validate(pandas_obj)
-        self._df = pandas_obj
-        self._last_run = ta.get_time(self._exchange, to_string=True)
+    @pd.api.extensions.register_dataframe_accessor("ta")
+    class QTraderAnalysisIndicators(ta.AnalysisIndicators):
+        """
+        QTrader Pandas-TA extension.
+        """
         
-        for attr in indicators:
-            setattr(self, attr, redirect_error(getattr(self, attr)))
+        def __init__(self, pandas_obj):
+            self._validate(pandas_obj)
+            self._df = pandas_obj
+            self._last_run = ta.get_time(self._exchange, to_string=True)
+            
+            for attr in indicators:
+                setattr(self, attr, redirect_error(getattr(self, attr)))
+else:
+    # Dummy accessor when pandas-ta is not available
+    @pd.api.extensions.register_dataframe_accessor("ta")
+    class QTraderAnalysisIndicators:
+        """
+        Dummy technical analysis accessor when pandas-ta is not installed.
+        """
+        def __init__(self, pandas_obj):
+            raise ImportError(
+                "pandas-ta is required for technical analysis features. "
+                "Please install it with: pip install pandas-ta\n"
+                "Note: pandas-ta 0.4.0+ requires Python 3.12+. "
+                "For Python 3.9-3.11, you may need to install from source."
+            )
     

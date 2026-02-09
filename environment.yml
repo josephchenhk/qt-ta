@@ -13,7 +13,10 @@ dependencies:
   - pytz
   - pytest
   - pip:
-      - "pandas-ta<0.4.0"  # Technical analysis library (use <0.4.0 for Python 3.9-3.11 compatibility)
+      # Note: pandas-ta is not included here because versions < 0.4.0 are no longer available on PyPI
+      # Versions 0.4.0+ require Python 3.12+
+      # For Python 3.11, you may need to install pandas-ta from source or use an alternative
+      # - pandas-ta  # Uncomment if using Python 3.12+ and want to install pandas-ta
       - quantstats     # Portfolio analytics and backtesting
       - scikit-optimize  # Bayesian optimization (skopt)
       - plotly         # Interactive visualization

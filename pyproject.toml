@@ -32,15 +32,21 @@ classifiers = [
 dependencies = [
     "pandas",
     "numpy",
-    "pandas-ta<0.4.0",  # Use versions <0.4.0 to support Python 3.9-3.11 (0.4.x requires Python 3.12+)
     "pytz",
-    # Note: pandas-ta <0.4.0 supports Python 3.9-3.11
-    # Versions 0.4.0+ require Python 3.12+
-    # Other dependencies have flexible versions to allow pip to automatically resolve
-    # compatible versions based on existing packages in the environment.
+    # Note: pandas-ta is not included here because:
+    # - Versions < 0.4.0 are no longer available on PyPI
+    # - Versions 0.4.0+ require Python 3.12+
+    # Install pandas-ta separately based on your Python version:
+    #   - Python 3.12+: pip install pandas-ta
+    #   - Python 3.9-3.11: Install from source or use alternative TA library
 ]
 
 [project.optional-dependencies]
+# Technical analysis (requires Python 3.12+ for pandas-ta 0.4.0+)
+# For Python 3.9-3.11, install pandas-ta from source or use alternative
+ta = [
+    "pandas-ta",  # Technical analysis library (requires Python 3.12+ for latest versions)
+]
 # Data source dependencies
 bql = [
     "bql",  # Bloomberg Query Language (requires Bloomberg Terminal)
@@ -74,6 +80,7 @@ jupyter = [
 ]
 # Install all optional dependencies: pip install qt-ta[all]
 all = [
+    "pandas-ta",  # Technical analysis (requires Python 3.12+)
     "bql",
     "qt-data",
     "plotly",
