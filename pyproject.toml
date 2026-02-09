@@ -32,9 +32,10 @@ classifiers = [
 dependencies = [
     "pandas",
     "numpy",
-    "pandas-ta==0.3.14b0",  # Pinned version for Python 3.9+ compatibility (newer versions require Python 3.12+)
+    "pandas-ta<0.4.0",  # Use versions <0.4.0 to support Python 3.9-3.11 (0.4.x requires Python 3.12+)
     "pytz",
-    # Note: pandas-ta is pinned to 0.3.14b0 to support Python 3.9-3.11
+    # Note: pandas-ta <0.4.0 supports Python 3.9-3.11
+    # Versions 0.4.0+ require Python 3.12+
     # Other dependencies have flexible versions to allow pip to automatically resolve
     # compatible versions based on existing packages in the environment.
 ]

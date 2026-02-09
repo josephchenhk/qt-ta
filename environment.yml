@@ -13,7 +13,7 @@ dependencies:
   - pytz
   - pytest
   - pip:
-      - pandas-ta==0.3.14b0  # Technical analysis library (pinned version for Python 3.11 compatibility)
+      - "pandas-ta<0.4.0"  # Technical analysis library (use <0.4.0 for Python 3.9-3.11 compatibility)
       - quantstats     # Portfolio analytics and backtesting
       - scikit-optimize  # Bayesian optimization (skopt)
       - plotly         # Interactive visualization
