@@ -1,0 +1,5 @@
+# Include only compiled files, exclude source files
+# Note: Source file removal is handled by run_packaging.py during wheel creation
+include pyproject.toml
+include setup.py
+include run_packaging.py

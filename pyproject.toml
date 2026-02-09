@@ -1,0 +1,126 @@
+[build-system]
+# Build-time dependencies (these don't affect runtime dependency conflicts)
+# Note: Cython>=3.0.0 is required for the Cython compilation features used
+requires = ["setuptools>=50.0", "wheel", "Cython>=3.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qt-ta"
+version = "1.0.0"
+description = "Technical analysis for quantitative trading"
+# readme = "README.md"  # Uncomment when README.md is available
+requires-python = ">=3.12"
+authors = [
+    {name = "Joseph Chen", email = "josephchenhk@gmail.com"}
+]
+maintainers = [
+    {name = "Joseph Chen", email = "josephchenhk@gmail.com"}
+]
+license = {text = "Proprietary"}
+keywords = ["finance", "technical-analysis", "quantitative-trading", "pandas-ta"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial",
+]
+
+dependencies = [
+    "pandas",
+    "numpy",
+    "pandas-ta",
+    "pytz",
+    # Note: Version constraints removed to allow pip to automatically resolve
+    # compatible versions based on existing packages in the environment.
+    # This provides maximum flexibility for different environments.
+]
+
+[project.optional-dependencies]
+# Data source dependencies
+bql = [
+    "bql",  # Bloomberg Query Language (requires Bloomberg Terminal)
+]
+qt-data = [
+    "qt-data",  # QT-Data library for data retrieval
+]
+# Visualization dependencies
+plotting = [
+    "plotly",
+    "Pillow",
+]
+# Image processing dependencies
+image = [
+    "Pillow",
+    "imagehash",
+]
+# Optimization and backtesting dependencies
+optimization = [
+    "scipy",
+    "scikit-optimize",
+    "quantstats",
+]
+# Progress bars
+progress = [
+    "tqdm",
+]
+# Jupyter/IPython support
+jupyter = [
+    "IPython",
+]
+# Install all optional dependencies: pip install qt-ta[all]
+all = [
+    "bql",
+    "qt-data",
+    "plotly",
+    "Pillow",
+    "imagehash",
+    "scipy",
+    "scikit-optimize",
+    "quantstats",
+    "tqdm",
+    "IPython",
+]
+# Development dependencies
+dev = [
+    "pytest",
+]
+
+[tool.setuptools]
+packages = ["qt_ta"]
+
+[tool.cibuildwheel]
+# Build for multiple Python versions
+build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*"]
+
+# Skip architectures if needed (uncomment to disable)
+# skip = ["pp*", "*-win32", "*-manylinux_i686", "*-musllinux_*"]
+
+# Test command (optional - runs tests after building)
+# test-command = "pytest"
+
+# Test requirements
+# test-extras = ["dev"]
+
+# Environment variables
+[tool.cibuildwheel.environment]
+# Add any environment variables needed for the build
+
+[tool.cibuildwheel.windows]
+# Windows-specific settings
+before-build = ["pip install Cython"]
+
+[tool.cibuildwheel.linux]
+# Linux-specific settings
+before-build = ["pip install Cython"]
+
+[tool.cibuildwheel.macos]
+# macOS-specific settings
+before-build = ["pip install Cython"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
